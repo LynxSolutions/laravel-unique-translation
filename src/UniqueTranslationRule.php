@@ -20,6 +20,16 @@ class UniqueTranslationRule
     protected $column = null;
 
     /**
+     * @var string
+     */
+    protected $delimiter;
+
+    /**
+     * @var string
+     */
+    protected $removePrefix;
+
+    /**
      * @var mixed
      */
     protected $ignoreValue = null;
@@ -34,12 +44,13 @@ class UniqueTranslationRule
      *
      * @param string $table
      * @param string|null $column
+     * @param string $delimiter
      *
      * @return static
      */
-    public static function for($table, $column = null)
+    public static function for($table, $column = null, $delimiter = '.', $removePrefix = '')
     {
-        return new static($table, $column);
+        return new static($table, $column, $delimiter, $removePrefix);
     }
 
     /**
@@ -48,10 +59,12 @@ class UniqueTranslationRule
      * @param string $table
      * @param string|null $column
      */
-    public function __construct($table, $column = null)
+    public function __construct($table, $column = null, $delimiter = '.', $removePrefix = '')
     {
         $this->table = $table;
         $this->column = $column;
+        $this->delimiter = $delimiter;
+        $this->removePrefix = $removePrefix;
     }
 
     /**
@@ -78,12 +91,14 @@ class UniqueTranslationRule
     public function __toString()
     {
         return sprintf(
-            '%s:%s,%s,%s,%s',
+            '%s:%s,%s,%s,%s,%s,%s',
             $this->rule,
             $this->table,
             $this->column ?: 'NULL',
             $this->ignoreValue ?: 'NULL',
-            $this->ignoreColumn ?: 'NULL'
+            $this->ignoreColumn ?: 'NULL',
+            $this->delimiter,
+            $this->removePrefix
         );
     }
 }

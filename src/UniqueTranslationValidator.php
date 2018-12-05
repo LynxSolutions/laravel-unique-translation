@@ -6,6 +6,8 @@ use DB;
 
 class UniqueTranslationValidator
 {
+     private $DEFAULT_DELIMITER = '.';
+
     /**
      * Check if the translated value is unique in the database.
      *
@@ -17,9 +19,14 @@ class UniqueTranslationValidator
      * @return bool
      */
     public function validate($attribute, $value, $parameters, $validator) {
-        $attributeParts = explode('.', $attribute);
+        $delimiter = $parameters[4] || $this->DEFAULT_DELIMITER;
+        $removePrefix = $parameters[5] || '';
+
+        $attribute = ltrim($attribute, $removePrefix);
+        $attributeParts = explode($delimiter, $attribute);
         $name = $attributeParts[0];
         $locale = $attributeParts[1] ?? app()->getLocale();
+
         $column = $this->filterNullValues($parameters[1] ?? null) ?: $name;
         $ignoreValue = $this->filterNullValues($parameters[2] ?? null);
         $ignoreColumn = $this->filterNullValues($parameters[3] ?? null);
