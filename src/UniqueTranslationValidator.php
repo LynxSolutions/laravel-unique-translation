@@ -19,8 +19,8 @@ class UniqueTranslationValidator
      * @return bool
      */
     public function validate($attribute, $value, $parameters, $validator) {
-        $delimiter = $parameters[4] || $this->DEFAULT_DELIMITER;
-        $removePrefix = $parameters[5] || '';
+        $delimiter = $parameters[4] ?? $this->DEFAULT_DELIMITER;
+        $removePrefix = $parameters[5] ?? '';
 
         $attribute = ltrim($attribute, $removePrefix);
         $attributeParts = explode($delimiter, $attribute);
