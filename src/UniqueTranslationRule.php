@@ -45,6 +45,7 @@ class UniqueTranslationRule
      * @param string $table
      * @param string|null $column
      * @param string $delimiter
+     * @param string $removePrefix
      *
      * @return static
      */
